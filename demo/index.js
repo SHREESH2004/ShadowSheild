@@ -1,11 +1,13 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
+import http from "http";
 import { fileURLToPath } from "url";
 
-import apiMetadata from "./middleware/middlware.js";
+import apiMetadata, { suspiciousEvents } from "./middleware/middlware.js";
 
 const app = express();
+const PORT = 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +31,30 @@ app.get("/download/:file", (req, res) => {
     res.download(filePath);
 });
 
-app.listen(3000, () => {
-    console.log("🚀 Server running on port 3000");
+app.get("/admin/suspicious", (req, res) => {
+    res.json(suspiciousEvents);
 });
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
+const TEST_URL = "http://localhost:3000/api/data";
+const TOTAL_REQUESTS = 100;
+
+function sendRequest() {
+    return new Promise((resolve) => {
+        http.get(TEST_URL, (res) => {
+            res.on("data", () => {});
+            res.on("end", resolve);
+        }).on("error", resolve);
+    });
+}
+
+async function attack() {
+    for (let i = 1; i <= TOTAL_REQUESTS; i++) {
+        await sendRequest();
+    }
+}
+
+attack();
