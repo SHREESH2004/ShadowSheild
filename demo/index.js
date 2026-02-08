@@ -36,6 +36,7 @@ app.get("/admin/suspicious", (req, res) => {
 });
 
 app.listen(PORT, () => {
+    attack()
     console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 
@@ -57,4 +58,4 @@ async function attack() {
     }
 }
 
-attack();
+//attack();
