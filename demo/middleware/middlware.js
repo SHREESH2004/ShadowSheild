@@ -12,7 +12,7 @@ setInterval(() => {
             suspiciousMap.delete(ip);
         }
     }
-}, 5 * 60 * 1000);
+}, 5 * 60 * 1000); 
 
 export default function apiMetadata(req, res, next) {
     const startTime = Date.now();
