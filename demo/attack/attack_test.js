@@ -1,7 +1,7 @@
 import http from "http";
 
 const URL = "http://localhost:3000/api/data";
-const TOTAL_REQUESTS = 100;
+const TOTAL_REQUESTS = 1000;
 
 function sendRequest(i) {
     return new Promise((resolve) => {

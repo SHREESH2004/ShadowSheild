@@ -5,6 +5,7 @@ const toISO = (t) => new Date(t).toISOString();
 const bytesToKB = (b) => +(b / 1024).toFixed(2);
 const bytesToMB = (b) => +(b / (1024 * 1024)).toFixed(2);
 
+/* cleanup old IPs */
 setInterval(() => {
     const now = Date.now();
     for (const [ip, data] of suspiciousMap) {
@@ -12,7 +13,7 @@ setInterval(() => {
             suspiciousMap.delete(ip);
         }
     }
-}, 5 * 60 * 1000); 
+}, 5 * 60 * 1000);
 
 export default function apiMetadata(req, res, next) {
     const startTime = Date.now();
@@ -40,10 +41,11 @@ export default function apiMetadata(req, res, next) {
             firstSeen: Date.now(),
             lastSeen: Date.now(),
             flagged: false,
-            flaggedAt: null
+            flaggedAt: null,
+            eventIndex: null
         };
 
-        /* ---------- accumulate ---------- */
+        /* accumulate */
         record.count += 1;
         record.bytes += bytesSent;
         record.totalLatency += latencyMs;
@@ -51,6 +53,13 @@ export default function apiMetadata(req, res, next) {
         record.lastSeen = Date.now();
 
         suspiciousMap.set(ip, record);
+
+        const windowSeconds = Math.max(
+            1,
+            Math.floor((record.lastSeen - record.firstSeen) / 1000)
+        );
+
+        /* FIRST FLAG */
         if (
             !record.flagged &&
             (
@@ -63,31 +72,38 @@ export default function apiMetadata(req, res, next) {
             record.flaggedAt = Date.now();
             req.isSuspicious = true;
 
-            const windowSeconds = Math.max(
-                1,
-                Math.floor((record.lastSeen - record.firstSeen) / 1000)
-            );
-
-            suspiciousEvents.push({
+            const event = {
                 ip,
-
                 totalRequests: record.count,
                 requestsPerSecond: +(record.count / windowSeconds).toFixed(2),
-
                 slowRequests: record.slow,
-
                 totalBytes: record.bytes,
                 totalKB: bytesToKB(record.bytes),
                 totalMB: bytesToMB(record.bytes),
-
                 averageLatencyMs: +(record.totalLatency / record.count).toFixed(2),
-
                 firstSeen: toISO(record.firstSeen),
                 lastSeen: toISO(record.lastSeen),
                 flaggedAt: toISO(record.flaggedAt),
-
                 observationWindowSeconds: windowSeconds
-            });
+            };
+
+            suspiciousEvents.push(event);
+            record.eventIndex = suspiciousEvents.length - 1;
+        }
+
+        /* UPDATE AFTER FLAG */
+        if (record.flagged && record.eventIndex !== null) {
+            const e = suspiciousEvents[record.eventIndex];
+
+            e.totalRequests = record.count;
+            e.requestsPerSecond = +(record.count / windowSeconds).toFixed(2);
+            e.slowRequests = record.slow;
+            e.totalBytes = record.bytes;
+            e.totalKB = bytesToKB(record.bytes);
+            e.totalMB = bytesToMB(record.bytes);
+            e.averageLatencyMs = +(record.totalLatency / record.count).toFixed(2);
+            e.lastSeen = toISO(record.lastSeen);
+            e.observationWindowSeconds = windowSeconds;
         }
 
         return originalEnd.apply(res, arguments);
