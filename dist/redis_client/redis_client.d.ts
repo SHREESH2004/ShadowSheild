@@ -1,4 +1,4 @@
-declare const client: import("@redis/client").RedisClientType<{
+export declare const redisClient: import("@redis/client").RedisClientType<{
     json: {
         ARRAPPEND: {
             readonly IS_READ_ONLY: false;
@@ -2312,6 +2312,5 @@ declare const client: import("@redis/client").RedisClientType<{
         };
     };
 } & import("redis").RedisModules, import("redis").RedisFunctions, import("redis").RedisScripts, import("redis").RespVersions, import("redis").TypeMapping>;
-export declare function connectRedis(): Promise<void>;
-export default client;
+export declare const connectRedis: () => Promise<void>;
 //# sourceMappingURL=redis_client.d.ts.map

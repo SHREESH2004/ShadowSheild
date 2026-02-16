@@ -2,37 +2,31 @@ import { createClient } from "redis";
 import dotenv from "dotenv";
 dotenv.config();
 if (!process.env.REDIS_URL) {
-    throw new Error("❌ REDIS_URL not defined in .env");
+    throw new Error("REDIS_URL not defined");
 }
-const client = createClient({
+export const redisClient = createClient({
     url: process.env.REDIS_URL,
     socket: {
         reconnectStrategy: (retries) => {
             if (retries > 10) {
-                console.error("❌ Redis retry attempts exhausted");
-                return new Error("Retry attempts exhausted");
+                return new Error("Redis retry limit exceeded");
             }
-            console.log(`🔁 Redis reconnect attempt #${retries}`);
             return Math.min(retries * 100, 3000);
         },
     },
 });
-client.on("connect", () => {
+redisClient.on("connect", () => {
     console.log("🔌 Connecting to Redis...");
 });
-client.on("ready", () => {
-    console.log("✅ Redis is ready");
+redisClient.on("ready", () => {
+    console.log("✅ Redis Ready");
 });
-client.on("error", (err) => {
-    console.error("❌ Redis Client Error:", err);
+redisClient.on("error", (err) => {
+    console.error("❌ Redis Error:", err);
 });
-client.on("end", () => {
-    console.log("⚠️ Redis connection closed");
-});
-export async function connectRedis() {
-    if (!client.isOpen) {
-        await client.connect();
+export const connectRedis = async () => {
+    if (!redisClient.isOpen) {
+        await redisClient.connect();
     }
-}
-export default client;
+};
 //# sourceMappingURL=redis_client.js.map
