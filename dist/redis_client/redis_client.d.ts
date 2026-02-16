@@ -515,9 +515,9 @@ export declare const redisClient: import("@redis/client").RedisClientType<{
         HYBRID: {
             readonly NOT_KEYED_COMMAND: true;
             readonly IS_READ_ONLY: true;
-            readonly parseCommand: (this: void, parser: import("redis").CommandParser, index: import("redis").RedisArgument, options?: import("@redis/search/dist/lib/commands/HYBRID.js").FtHybridOptions | undefined) => void;
+            readonly parseCommand: (this: void, parser: import("redis").CommandParser, index: import("redis").RedisArgument, options: import("@redis/search/dist/lib/commands/HYBRID.js").FtHybridOptions) => void;
             readonly transformReply: {
-                readonly 2: (reply: any) => any;
+                readonly 2: (reply: any) => import("@redis/search/dist/lib/commands/HYBRID.js").HybridSearchResult;
                 readonly 3: () => import("@redis/client/dist/lib/RESP/types.js").ReplyUnion;
             };
             readonly unstableResp3: true;
@@ -525,9 +525,9 @@ export declare const redisClient: import("@redis/client").RedisClientType<{
         hybrid: {
             readonly NOT_KEYED_COMMAND: true;
             readonly IS_READ_ONLY: true;
-            readonly parseCommand: (this: void, parser: import("redis").CommandParser, index: import("redis").RedisArgument, options?: import("@redis/search/dist/lib/commands/HYBRID.js").FtHybridOptions | undefined) => void;
+            readonly parseCommand: (this: void, parser: import("redis").CommandParser, index: import("redis").RedisArgument, options: import("@redis/search/dist/lib/commands/HYBRID.js").FtHybridOptions) => void;
             readonly transformReply: {
-                readonly 2: (reply: any) => any;
+                readonly 2: (reply: any) => import("@redis/search/dist/lib/commands/HYBRID.js").HybridSearchResult;
                 readonly 3: () => import("@redis/client/dist/lib/RESP/types.js").ReplyUnion;
             };
             readonly unstableResp3: true;
