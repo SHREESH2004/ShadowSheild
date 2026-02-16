@@ -1,13 +1,11 @@
 import { ipEngine } from "../engines/ip/ipEngine.js";
 import { redisClient } from "../redis_client/redis_client.js";
 import { updateIPState } from "../engines/ip/ipState.js";
-// shadowsheild.ts
 export async function shadowsheild(req, res, next) {
     const ip = req.ip;
     if (!ip) {
         return res.status(400).json({ message: "IP not found" });
     }
-    // 🔴 Only lightweight check inline
     const blocked = await redisClient.get(`block:ip:${ip}`);
     if (blocked) {
         return res.status(403).json({ message: "Blocked" });
@@ -28,6 +26,7 @@ export async function shadowsheild(req, res, next) {
                 EX: 600
             });
         }
+        console.log(risk);
     });
     next();
 }
