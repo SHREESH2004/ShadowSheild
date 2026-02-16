@@ -20,14 +20,15 @@
   },
   "homepage": "https://github.com/SHREESH2004/NodeJs-setup-in-TS#readme",
   "dependencies": {
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
     "express": "^5.1.0",
-    "express-validator": "^7.3.0"
+    "express-validator": "^7.3.0",
+    "redis": "^5.10.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/express-validator": "^2.20.33",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.13",
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
     "typescript": "^5.9.3"
