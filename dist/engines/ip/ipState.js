@@ -3,6 +3,7 @@ const WINDOW_MS = 60 * 1000;
 export async function updateIPState(data) {
     const now = Date.now();
     const { ip, endpoint, status, latency, bytes, payloadHash } = data;
+    console.log("IP detected:", ip);
     await redisClient.zAdd(`ip:timeline:${ip}`, {
         score: now,
         value: `${now}`

@@ -26,7 +26,7 @@ export async function shadowsheild(req, res, next) {
                 EX: 600
             });
         }
-        console.log(risk);
+        //console.log(risk)
     });
     next();
 }

@@ -14,6 +14,7 @@ interface UpdateIPStateInput {
 export async function updateIPState(data: UpdateIPStateInput) {
   const now = Date.now();
   const { ip, endpoint, status, latency, bytes, payloadHash } = data;
+  console.log("IP detected:", ip);
 
   await redisClient.zAdd(`ip:timeline:${ip}`, {
     score: now,
