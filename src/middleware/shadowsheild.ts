@@ -34,7 +34,6 @@ export async function shadowsheild(req:Request, res:Response, next:NextFunction)
         EX: 600
       });
     }
-      //console.log(risk)
   });
 
   next();

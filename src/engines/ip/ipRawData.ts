@@ -25,7 +25,7 @@ export async function getIPRawData(ip: string) {
   const rpm = (results[0] as unknown as number) ?? 0;
 
   const stats =
-    (results[1] as unknown as IPStats) ?? {};
+    (results[1] as IPStats) ?? {};
 
   const endpoints =
     (results[2] as unknown as Record<string, string>) ?? {};
