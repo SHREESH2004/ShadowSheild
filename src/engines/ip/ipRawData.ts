@@ -6,7 +6,6 @@ interface IPStats {
   totalBytes?: string;
   totalLatency?: string;
 }
-
 export async function getIPRawData(ip: string) {
   const pipeline = redisClient.multi();
 
