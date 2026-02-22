@@ -11,6 +11,7 @@ export async function getIPRawData(ip: string) {
 
   pipeline.zCard(`ip:timeline:${ip}`);
   pipeline.hGetAll(`ip:stats:${ip}`);
+  
   pipeline.hGetAll(`ip:endpoints:${ip}`);
   pipeline.hGetAll(`ip:payload:${ip}`);
   pipeline.zRangeWithScores(`ip:timeline:${ip}`, -50, -1);
