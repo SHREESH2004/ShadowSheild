@@ -8,7 +8,6 @@ interface IPStats {
 }
 export async function getIPRawData(ip: string) {
   const pipeline = redisClient.multi();
-
   pipeline.zCard(`ip:timeline:${ip}`);
   pipeline.hGetAll(`ip:stats:${ip}`);
   
