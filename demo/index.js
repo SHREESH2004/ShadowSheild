@@ -14,11 +14,11 @@ app.use(session({
 const loggerMiddleware = (req, res, next) => {
   res.on('finish', () => {
     const logData = {
-      ip: req.ip,
+      ip: req.ip === '::1' ? '127.0.0.1' : req.ip,
       endpoint: req.path,
       timestamp: Date.now(),
       statusCode: res.statusCode,
-      responseSize: res.getHeader('content-length') || 0,
+      responseSize: parseInt(res.getHeader('content-length')) || 0,
       // Extracting the Session ID here:
       sessionId: req.sessionID || 'no-session' 
     };
