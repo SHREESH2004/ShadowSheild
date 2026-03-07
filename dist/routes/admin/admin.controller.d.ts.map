@@ -1,1 +1,1 @@
-{"version":3,"file":"admin.controller.d.ts","sourceRoot":"","sources":["../../../src/routes/admin/admin.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAI5C,wBAAsB,YAAY,CAAC,GAAG,EAAE,OAAO,EAAE,GAAG,EAAE,QAAQ,+CAqC7D"}
+{"version":3,"file":"admin.controller.d.ts","sourceRoot":"","sources":["../../../src/routes/admin/admin.controller.ts"],"names":[],"mappings":""}

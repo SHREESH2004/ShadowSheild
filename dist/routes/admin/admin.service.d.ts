@@ -1,3 +1,2 @@
-import { Request, Response } from "express";
-export declare function getIPDetails(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+export {};
 //# sourceMappingURL=admin.service.d.ts.map
