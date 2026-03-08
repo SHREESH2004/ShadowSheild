@@ -1,1 +1,1 @@
-{"version":3,"file":"shadowsheild.d.ts","sourceRoot":"","sources":["../../src/middleware/shadowsheild.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAA;AAKzD,eAAO,MAAM,YAAY,GACrB,KAAK,OAAO,EACZ,KAAK,QAAQ,EACb,MAAM,YAAY,KACnB,OAAO,CAAC,IAAI,CA+Bd,CAAA"}
+{"version":3,"file":"shadowsheild.d.ts","sourceRoot":"","sources":["../../src/middleware/shadowsheild.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAA;AAKzD,eAAO,MAAM,YAAY,GACrB,KAAK,OAAO,EACZ,KAAK,QAAQ,EACb,MAAM,YAAY,KACnB,OAAO,CAAC,IAAI,CAkCd,CAAA"}

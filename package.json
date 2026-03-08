@@ -7,7 +7,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\""
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "attack": "node dist/test/attack.js",
+    "normal": "node dist/test/normal.js"
   },
   "repository": {
     "type": "git",

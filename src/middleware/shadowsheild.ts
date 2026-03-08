@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { writeIPData } from "../engines/ip/ipEngine.js"
+import { IPRiskScore, writeIPData } from "../engines/ip/ipEngine.js"
 import { client } from "../config/redis.js"
 import { ipstructure } from "../engines/ip/ipEngine.js"
 
@@ -10,6 +10,7 @@ export const shadowShield = async (
 ): Promise<void> => {
 
     const ip = req.ip === '::1' ? '127.0.0.1' : (req.ip || '0.0.0.0')
+
     const blocked = await client.get(`block:${ip}`)
     if (blocked) {
         res.status(429).json({
@@ -18,24 +19,26 @@ export const shadowShield = async (
         })
         return
     }
-    const cachedRisk = await client.get(`risk:ip:${ip}`)
-    if (cachedRisk && parseFloat(cachedRisk) > 0.8) {
-        res.status(429).json({
-            error: "Suspicious activity detected",
-            blocked: true
-        })
-        return
-    }
+
     next()
 
     res.on('finish', async () => {
 
-        const activityData:ipstructure = {
-        ip,
-        endpoint: req.path,
-        statusCode: res.statusCode,
-        responseSize: +(res.getHeader('content-length') || 0),
-    };
-    await writeIPData(activityData);
+        const activityData: ipstructure = {
+            ip,
+            endpoint:     req.path,
+            statusCode:   res.statusCode,
+            responseSize: +(res.getHeader('content-length') || 0),
+        }
+
+        await writeIPData(activityData)
+        const risk = await IPRiskScore(ip)
+        
+        if (Number(risk) >= 0.7) {
+            await client.set(`block:${ip}`, '1', 'EX', 3600)
+            console.log(`🚨 IP BLOCKED: ${ip} | risk: ${risk.toFixed(2)}`)
+        }
+
+        console.log(`📊 IP: ${ip} | endpoint: ${req.path} | risk: ${risk.toFixed(2)}`)
     })
 }
