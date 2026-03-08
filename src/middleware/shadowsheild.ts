@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express"
-import { IPRiskScore, writeIPData } from "../engines/ip/ipEngine.js"
+import { IPRiskScore, writeIPData } from "../engines/ip/ip.Engine.js"
 import { client } from "../config/redis.js"
-import { ipstructure } from "../engines/ip/ipEngine.js"
+import { ipstructure } from "../engines/ip/ip.Engine.js"
+import { SessionRiskScore, SessionStructure, writeSessionData } from "../engines/session/session.engine.js"
 
 export const shadowShield = async (
     req: Request,
@@ -10,7 +11,9 @@ export const shadowShield = async (
 ): Promise<void> => {
 
     const ip = req.ip === '::1' ? '127.0.0.1' : (req.ip || '0.0.0.0')
-
+    const sessionId = (req.cookies?.session_id
+        || req.headers['x-session-id']
+        || ip) as string
     const blocked = await client.get(`block:${ip}`)
     if (blocked) {
         res.status(429).json({
@@ -26,19 +29,28 @@ export const shadowShield = async (
 
         const activityData: ipstructure = {
             ip,
-            endpoint:     req.path,
-            statusCode:   res.statusCode,
+            endpoint: req.path,
+            statusCode: res.statusCode,
             responseSize: +(res.getHeader('content-length') || 0),
         }
 
         await writeIPData(activityData)
-        const risk = await IPRiskScore(ip)
-        
-        if (Number(risk) >= 0.7) {
+        const ipRisk = await IPRiskScore(ip)
+        const sessionData: SessionStructure = {
+            sessionId,
+            endpoint: req.path,
+            statusCode: res.statusCode,
+        }
+        await writeSessionData(sessionData)
+        const sessionRisk = await SessionRiskScore(sessionId)
+        const finalRisk = (0.625 * ipRisk) + (0.475 * sessionRisk)
+
+
+        if (finalRisk >= 0.7 || sessionRisk >= 0.8) {
             await client.set(`block:${ip}`, '1', 'EX', 3600)
-            console.log(`🚨 IP BLOCKED: ${ip} | risk: ${risk.toFixed(2)}`)
+            console.log(`BLOCKED: ${ip} | ip: ${ipRisk.toFixed(2)} | session: ${sessionRisk.toFixed(2)} | final: ${finalRisk.toFixed(2)}`)
         }
 
-        console.log(`📊 IP: ${ip} | endpoint: ${req.path} | risk: ${risk.toFixed(2)}`)
+        console.log(`IP: ${ip} | endpoint: ${req.path} | risk: ${finalRisk.toFixed(2)}`)
     })
 }
