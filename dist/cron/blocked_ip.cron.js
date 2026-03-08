@@ -2,7 +2,7 @@ import nodeCron from "node-cron";
 import { client } from "../config/redis.js";
 import { db } from "../config/postgres.js";
 export const syncBlockedIps = () => {
-    nodeCron.schedule("*/5 * * * *", async () => {
+    nodeCron.schedule("*/1 * * * *", async () => {
         console.log("🔄 Cron: syncing blocked IPs...");
         try {
             const keys = await client.keys("block:*");
@@ -19,8 +19,15 @@ export const syncBlockedIps = () => {
                 await db.query(`
                     INSERT INTO blocked_ips
                         (ip, risk_score, expires_at, reason)
+                    VALUES
+                        ($1, $2, $3, $4)
+                    ON CONFLICT (ip)
+                    DO UPDATE SET
+                        risk_score = EXCLUDED.risk_score,
+                        expires_at = EXCLUDED.expires_at,
+                        blocked_at = NOW()
                 `, [ip, riskScore, expiresAt, "High risk score"]);
-                console.log(`Blocked IP saved: ${ip} | risk: ${riskScore} | expires: ${expiresAt}`);
+                console.log(`💾 Blocked IP saved: ${ip} | risk: ${riskScore}`);
             }
             console.log(`Cron: synced ${keys.length} blocked IPs`);
         }
