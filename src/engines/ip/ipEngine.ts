@@ -114,9 +114,9 @@ export const IPRiskScore = async (ip: string): Promise<number> => {
     const normVolume = Math.min(volumeMb / 50, 1)
     const risk = (
         (0.30 * normRpm)      +   // request frequency
-        (0.10 * errorRate)    +   // errors — less reliable
+        (0.10 * errorRate)    +   
         (0.25 * entropyScore) +   // endpoint diversity
-        (0.25 * cvGapScore)   +   // timing regularity ← strongest signal
+        (0.25 * cvGapScore)   +   // timing gaps
         (0.10 * normVolume)       // data volume
     )
 
