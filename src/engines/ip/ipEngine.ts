@@ -45,7 +45,6 @@ export const IPFeatures = async (ip: string) => {
         client.get(`ip:${ip}:errors`),
         client.get(`ip:${ip}:bytes`)
     ])
-
     // ── rpm ──
     const now      = Date.now()
     const recentTs = timestamps
