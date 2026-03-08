@@ -1,0 +1,1 @@
+{"version":3,"file":"ipEngine.d.ts","sourceRoot":"","sources":["../../../src/engines/ip/ipEngine.ts"],"names":[],"mappings":"AAOA,MAAM,WAAW,WAAW;IACxB,EAAE,EAAC,MAAM,CAAC;IACV,QAAQ,EAAC,MAAM,CAAC;IAChB,UAAU,EAAC,MAAM,CAAC;IAClB,YAAY,EAAC,MAAM,CAAC;CACvB;AAED,eAAO,MAAM,WAAW,GAAU,MAAM,WAAW,KAAG,OAAO,CAAC,IAAI,CAyBjE,CAAA"}
