@@ -2,11 +2,16 @@
   "name": "shadowshield",
   "version": "1.0.0",
   "description": "Behavioral API security middleware for Express — detects bots, scrapers and session hijacking in real time",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/packageIndex.js",
+  "types": "dist/packageIndex.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/packageIndex.js",
+    "dist/packageIndex.d.ts",
+    "dist/packageIndex.js.map",
+    "dist/packageIndex.d.ts.map",
+    "dist/middleware",
+    "dist/engines"
   ],
   "keywords": [
     "security",
@@ -40,12 +45,8 @@
     "express": ">=4.0.0"
   },
   "dependencies": {
-    "dotenv": "^17.3.1",
-    "express": "^5.1.0",
-    "express-session": "^1.19.0",
     "ioredis": "^5.10.0",
-    "node-cron": "^4.2.1",
-    "pg": "^8.20.0"
+    "express-session": "^1.19.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

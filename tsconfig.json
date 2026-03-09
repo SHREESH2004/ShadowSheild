@@ -17,6 +17,8 @@
   },
   "include": [
     "src/index.ts",
+    "src/packageIndex.ts",
+    "src/app.ts",
     "src/middleware/**/*",
     "src/engines/**/*",
     "src/config/**/*",
