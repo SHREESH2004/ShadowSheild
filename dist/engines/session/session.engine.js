@@ -1,21 +1,20 @@
-import { client } from "../../config/redis.js";
 const SESSION_WINDOW = 60;
 const MAX_RPM = 150;
 const MAX_CV = 2;
-export const writeSessionData = async (data) => {
+export const writeSessionData = async (data, redis) => {
     const timestamp = Date.now().toString();
     await Promise.all([
-        client.lpush(`session:${data.sessionId}:timestamps`, timestamp),
-        client.expire(`session:${data.sessionId}:timestamps`, SESSION_WINDOW),
-        client.hincrby(`session:${data.sessionId}:endpoints`, data.endpoint, 1),
-        client.expire(`session:${data.sessionId}:endpoints`, SESSION_WINDOW),
-        client.set(`session:${data.sessionId}:ip`, data.ip, 'EX', SESSION_WINDOW),
+        redis.lpush(`session:${data.sessionId}:timestamps`, timestamp),
+        redis.expire(`session:${data.sessionId}:timestamps`, SESSION_WINDOW),
+        redis.hincrby(`session:${data.sessionId}:endpoints`, data.endpoint, 1),
+        redis.expire(`session:${data.sessionId}:endpoints`, SESSION_WINDOW),
+        redis.set(`session:${data.sessionId}:ip`, data.ip, 'EX', SESSION_WINDOW),
     ]);
 };
-export const SessionFeature = async (sessionId) => {
+export const SessionFeature = async (sessionId, redis) => {
     const [timestamps, endpoints] = await Promise.all([
-        client.lrange(`session:${sessionId}:timestamps`, 0, -1),
-        client.hgetall(`session:${sessionId}:endpoints`),
+        redis.lrange(`session:${sessionId}:timestamps`, 0, -1),
+        redis.hgetall(`session:${sessionId}:endpoints`),
     ]);
     const now = Date.now();
     const recentTs = timestamps
@@ -48,8 +47,8 @@ export const SessionFeature = async (sessionId) => {
         vector: [rpm, entropy, cvGap]
     };
 };
-export const SessionRiskScore = async (sessionId) => {
-    const { rpm, entropy, cvGap } = await SessionFeature(sessionId);
+export const SessionRiskScore = async (sessionId, redis) => {
+    const { rpm, entropy, cvGap } = await SessionFeature(sessionId, redis);
     const normRpm = Math.min(rpm / MAX_RPM, 1);
     const maxEntropy = Math.log2(10);
     const normEntropy = Math.min(entropy / maxEntropy, 1);
@@ -60,11 +59,5 @@ export const SessionRiskScore = async (sessionId) => {
         (0.35 * cvGapScore) +
         (0.30 * entropyScore));
     return Math.min(risk, 1.0);
-};
-export const getSessionScore = async (sessionId) => {
-    const cached = await client.get(`risk:session:${sessionId}`);
-    if (cached)
-        return parseFloat(cached);
-    return await SessionRiskScore(sessionId);
 };
 //# sourceMappingURL=session.engine.js.map

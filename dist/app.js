@@ -16,6 +16,8 @@ app.use(session({
     }
 }));
 app.use(shadowShield({
+    redisHost: process.env.REDIS_HOST || "127.0.0.1",
+    redisPort: parseInt(process.env.REDIS_PORT || "6379"),
     threshold: 0.7,
     blockTTL: 3600
 }));
