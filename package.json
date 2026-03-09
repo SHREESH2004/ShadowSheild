@@ -1,41 +1,55 @@
 {
-  "name": "shadowsheild",
+  "name": "shadowshield",
   "version": "1.0.0",
-  "description": "",
+  "description": "Behavioral API security middleware for Express — detects bots, scrapers and session hijacking in real time",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "keywords": [
+    "security",
+    "middleware",
+    "express",
+    "bot-detection",
+    "redis",
+    "rate-limiting",
+    "behavioral-analysis",
+    "session-hijacking"
+  ],
+  "author": "SHREESH2004",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SHREESH2004/shadowshield.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SHREESH2004/shadowshield/issues"
+  },
+  "homepage": "https://github.com/SHREESH2004/shadowshield#readme",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "attack": "node dist/test/attack.js",
-    "normal": "node dist/test/normal.js"
+    "normal": "node dist/test/normal.js",
+    "prepare": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SHREESH2004/NodeJs-setup-in-TS.git"
+  "peerDependencies": {
+    "express": ">=4.0.0"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SHREESH2004/NodeJs-setup-in-TS/issues"
-  },
-  "homepage": "https://github.com/SHREESH2004/NodeJs-setup-in-TS#readme",
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "express-session": "^1.19.0",
-    "express-validator": "^7.3.0",
     "ioredis": "^5.10.0",
     "node-cron": "^4.2.1",
-    "pg": "^8.20.0",
-    "redis": "^5.11.0"
+    "pg": "^8.20.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.18.2",
-    "@types/express-validator": "^2.20.33",
-    "@types/ioredis": "^4.28.10",
     "@types/node": "^24.10.13",
     "@types/node-cron": "^3.0.11",
     "@types/pg": "^8.18.0",

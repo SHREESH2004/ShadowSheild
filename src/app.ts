@@ -7,6 +7,7 @@ import { shadowShield } from "./middleware/shadowsheild.js"
 const app = express()
 
 app.use(express.json())
+
 app.use(session({
     secret: process.env.SESSION_SECRET || "shadowshield-secret",
     resave: false,
@@ -18,7 +19,10 @@ app.use(session({
     }
 }))
 
-app.use(shadowShield)
+app.use(shadowShield({
+    threshold: 0.7,
+    blockTTL: 3600
+}))
 
 app.use("/api", apiRoutes)
 app.use("/download", downloadRoutes)

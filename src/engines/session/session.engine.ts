@@ -1,4 +1,5 @@
-import { client } from "../../config/redis.js";
+import { client } from "../../config/redis.js"
+
 const SESSION_WINDOW = 60
 const MAX_RPM = 150
 const MAX_CV = 2
@@ -7,23 +8,26 @@ export interface SessionStructure {
     sessionId: string
     endpoint: string
     statusCode: number
+    ip: string
 }
 
 export const writeSessionData = async (data: SessionStructure): Promise<void> => {
+
     const timestamp = Date.now().toString()
 
     await Promise.all([
         client.lpush(`session:${data.sessionId}:timestamps`, timestamp),
         client.expire(`session:${data.sessionId}:timestamps`, SESSION_WINDOW),
 
-
         client.hincrby(`session:${data.sessionId}:endpoints`, data.endpoint, 1),
         client.expire(`session:${data.sessionId}:endpoints`, SESSION_WINDOW),
 
+        client.set(`session:${data.sessionId}:ip`, data.ip, 'EX', SESSION_WINDOW),
     ])
 }
 
-export const SessionFeature = async (sessionId: String) => {
+export const SessionFeature = async (sessionId: string) => {
+
     const [timestamps, endpoints] = await Promise.all([
         client.lrange(`session:${sessionId}:timestamps`, 0, -1),
         client.hgetall(`session:${sessionId}:endpoints`),
@@ -34,6 +38,7 @@ export const SessionFeature = async (sessionId: String) => {
         .map(Number)
         .filter(t => now - t <= SESSION_WINDOW * 1000)
     const rpm = recentTs.length
+
     const endpointMap = endpoints || {}
     const endpointVals = Object.values(endpointMap).map(Number)
     const endpointSum = endpointVals.reduce((a, b) => a + b, 0)
@@ -45,6 +50,7 @@ export const SessionFeature = async (sessionId: String) => {
             if (p > 0) entropy -= p * Math.log2(p)
         })
     }
+
     let cvGap = 1.0
 
     if (recentTs.length > 2) {
@@ -68,6 +74,7 @@ export const SessionFeature = async (sessionId: String) => {
 export const SessionRiskScore = async (sessionId: string): Promise<number> => {
 
     const { rpm, entropy, cvGap } = await SessionFeature(sessionId)
+
     const normRpm = Math.min(rpm / MAX_RPM, 1)
     const maxEntropy = Math.log2(10)
     const normEntropy = Math.min(entropy / maxEntropy, 1)
@@ -75,15 +82,15 @@ export const SessionRiskScore = async (sessionId: string): Promise<number> => {
     const normCvGap = Math.min(cvGap / MAX_CV, 1)
     const cvGapScore = 1 - normCvGap
 
-
     const risk = (
-        (0.35 * normRpm) +   // request frequency
-        (0.35 * cvGapScore) +   // timing regularity ← strongest
-        (0.30 * entropyScore)     // endpoint diversity
+        (0.35 * normRpm) +
+        (0.35 * cvGapScore) +
+        (0.30 * entropyScore)
     )
 
     return Math.min(risk, 1.0)
 }
+
 export const getSessionScore = async (sessionId: string): Promise<number> => {
 
     const cached = await client.get(`risk:session:${sessionId}`)
@@ -91,4 +98,3 @@ export const getSessionScore = async (sessionId: string): Promise<number> => {
 
     return await SessionRiskScore(sessionId)
 }
-

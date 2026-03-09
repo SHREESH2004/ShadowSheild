@@ -2,9 +2,10 @@ export interface SessionStructure {
     sessionId: string;
     endpoint: string;
     statusCode: number;
+    ip: string;
 }
 export declare const writeSessionData: (data: SessionStructure) => Promise<void>;
-export declare const SessionFeature: (sessionId: String) => Promise<{
+export declare const SessionFeature: (sessionId: string) => Promise<{
     rpm: number;
     entropy: number;
     cvGap: number;

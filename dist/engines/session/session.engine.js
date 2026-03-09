@@ -9,6 +9,7 @@ export const writeSessionData = async (data) => {
         client.expire(`session:${data.sessionId}:timestamps`, SESSION_WINDOW),
         client.hincrby(`session:${data.sessionId}:endpoints`, data.endpoint, 1),
         client.expire(`session:${data.sessionId}:endpoints`, SESSION_WINDOW),
+        client.set(`session:${data.sessionId}:ip`, data.ip, 'EX', SESSION_WINDOW),
     ]);
 };
 export const SessionFeature = async (sessionId) => {
@@ -55,10 +56,9 @@ export const SessionRiskScore = async (sessionId) => {
     const entropyScore = Math.abs(normEntropy - 0.5) * 2;
     const normCvGap = Math.min(cvGap / MAX_CV, 1);
     const cvGapScore = 1 - normCvGap;
-    const risk = ((0.35 * normRpm) + // request frequency
-        (0.35 * cvGapScore) + // timing regularity ← strongest
-        (0.30 * entropyScore) // endpoint diversity
-    );
+    const risk = ((0.35 * normRpm) +
+        (0.35 * cvGapScore) +
+        (0.30 * entropyScore));
     return Math.min(risk, 1.0);
 };
 export const getSessionScore = async (sessionId) => {

@@ -15,7 +15,10 @@ app.use(session({
         maxAge: 1000 * 60 * 60
     }
 }));
-app.use(shadowShield);
+app.use(shadowShield({
+    threshold: 0.7,
+    blockTTL: 3600
+}));
 app.use("/api", apiRoutes);
 app.use("/download", downloadRoutes);
 export default app;
