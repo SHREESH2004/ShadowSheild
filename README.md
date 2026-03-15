@@ -319,4 +319,4 @@ MIT © [SHREESH2004](https://github.com/SHREESH2004)
 - **npm** → https://www.npmjs.com/package/shadowshield
 - **GitHub** → https://github.com/SHREESH2004/Shadowsheild
 - **Issues** → https://github.com/SHREESH2004/Shadowsheild/issues
-- **Article** → https://dev.to/shreesh_sanyal_eb6b605a70/i-built-an-expressjs-middlewa
+- **Article** → https://dev.to/shreesh_sanyal_eb6b605a70/i-built-an-expressjs-middleware-that-detects-bots-using-behavioral-scoring-and-published-it-to-4c3g
