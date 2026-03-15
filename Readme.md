@@ -284,8 +284,9 @@ volumes:
 ## Contributing
 
 PRs are welcome. For major changes please open an issue first.
+
 ```bash
-git clone https://github.com/SHREESH2004/ShadowSheild.git
+git clone https://github.com/SHREESH2004/ShadowSheild
 cd shadowshield
 npm install
 npm run dev
