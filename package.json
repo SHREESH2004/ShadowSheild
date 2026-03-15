@@ -1,6 +1,6 @@
 {
   "name": "shadowshield",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Behavioral API security middleware for Express — detects bots, scrapers and session hijacking in real time",
   "main": "dist/packageIndex.js",
   "types": "dist/packageIndex.d.ts",
