@@ -3,6 +3,14 @@ import { Request, Response, NextFunction } from "express"
 import { IPRiskScore, writeIPData, ipstructure } from "../engines/ip/ip.Engine.js"
 import { SessionRiskScore, SessionStructure, writeSessionData } from "../engines/session/session.engine.js"
 
+declare global {
+    namespace Express {
+        interface Request {
+            session?: { id?: string }
+        }
+    }
+}
+
 export interface ShadowShieldOptions {
     redisUrl?: string
     redisHost?: string
