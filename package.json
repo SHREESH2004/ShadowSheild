@@ -27,12 +27,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SHREESH2004/shadowshield.git"
+    "url": "https://github.com/SHREESH2004/Shadowsheild.git"
   },
+  "homepage": "https://github.com/SHREESH2004/Shadowsheild#readme",
   "bugs": {
-    "url": "https://github.com/SHREESH2004/shadowshield/issues"
+    "url": "https://github.com/SHREESH2004/Shadowsheild/issues"
   },
-  "homepage": "https://github.com/SHREESH2004/shadowshield#readme",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
