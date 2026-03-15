@@ -15,13 +15,13 @@
       "node"
     ]
   },
-  "include": [
+"include": [
     "src/index.ts",
     "src/packageIndex.ts",
     "src/app.ts",
     "src/middleware/**/*",
     "src/engines/**/*",
-    "src/config/**/*",
+    "src/config/schema.ts",
     "src/cron/**/*",
     "src/types/**/*"
   ],
@@ -29,6 +29,7 @@
     "node_modules",
     "dist",
     "src/test/**/*",
-    "src/routes/**/*"
+    "src/routes/**/*",
+    "src/redis_client/**/*"
   ]
 }
