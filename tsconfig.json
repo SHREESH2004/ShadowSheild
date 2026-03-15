@@ -11,25 +11,23 @@
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-"include": [
-    "src/index.ts",
+  "include": [
     "src/packageIndex.ts",
-    "src/app.ts",
     "src/middleware/**/*",
     "src/engines/**/*",
-    "src/config/schema.ts",
-    "src/cron/**/*",
     "src/types/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "src/test/**/*",
+    "src/index.ts",
+    "src/app.ts",
+    "src/config/**/*",
+    "src/cron/**/*",
+    "src/redis_client/**/*",
     "src/routes/**/*",
-    "src/redis_client/**/*"
+    "src/test/**/*"
   ]
 }
