@@ -45,8 +45,9 @@
     "express": ">=4.0.0"
   },
   "dependencies": {
+    "express-session": "^1.19.0",
     "ioredis": "^5.10.0",
-    "express-session": "^1.19.0"
+    "shadowshield": "^1.0.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
