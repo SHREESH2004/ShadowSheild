@@ -1,4 +1,13 @@
 import { Request, Response, NextFunction } from "express";
+declare global {
+    namespace Express {
+        interface Request {
+            session?: {
+                id?: string;
+            };
+        }
+    }
+}
 export interface ShadowShieldOptions {
     redisUrl?: string;
     redisHost?: string;
