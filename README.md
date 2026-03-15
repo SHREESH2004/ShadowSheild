@@ -286,7 +286,7 @@ volumes:
 PRs are welcome. For major changes please open an issue first.
 
 ```bash
-git clone https://github.com/SHREESH2004/shadowshield.git
+git clone https://github.com/SHREESH2004/ShadowSheild
 cd shadowshield
 npm install
 npm run dev
@@ -303,5 +303,5 @@ MIT © [SHREESH2004](https://github.com/SHREESH2004)
 ## Links
 
 - **npm** → https://www.npmjs.com/package/shadowshield
-- **Issues** → https://github.com/SHREESH2004/shadowshield/issues
-```
+- **GitHub** → https://github.com/SHREESH2004/ShadowSheild
+- **Issues** → https://github.com/SHREESH2004/ShadowSheild/issues
